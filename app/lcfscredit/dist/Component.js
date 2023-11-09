@@ -1,0 +1,1 @@
+sap.ui.define(["sap/fe/core/AppComponent"],function(e){"use strict";return e.extend("nscredit.lcfscredit.Component",{metadata:{manifest:"json"}})});

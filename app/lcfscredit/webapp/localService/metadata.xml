@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CreditService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Credit" EntityType="CreditService.Credit"/>
+            </EntityContainer>
+            <EntityType Name="Credit">
+                <Key>
+                    <PropertyRef Name="ro_number"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="db_key" Type="Edm.Guid"/>
+                <Property Name="ro_number" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="reg_type" Type="Edm.String" MaxLength="4"/>
+                <Property Name="reg_type_desc" Type="Edm.String" MaxLength="40"/>
+                <Property Name="reg_category" Type="Edm.String" MaxLength="4"/>
+                <Property Name="ren_object_type" Type="Edm.String" MaxLength="1"/>
+                <Property Name="ren_object_type_dsc" Type="Edm.String" MaxLength="30"/>
+                <Property Name="so_scenario" Type="Edm.String" MaxLength="40"/>
+                <Property Name="ro_sub_type_dsc" Type="Edm.String" MaxLength="30"/>
+                <Property Name="tran_category" Type="Edm.String" MaxLength="3"/>
+                <Property Name="tran_category_dsc" Type="Edm.String" MaxLength="30"/>
+                <Property Name="pass_retain_ind" Type="Edm.String" MaxLength="1"/>
+                <Property Name="oblig_dsc" Type="Edm.String" MaxLength="30"/>
+                <Property Name="impact" Type="Edm.String" MaxLength="1"/>
+                <Property Name="impact_dsc" Type="Edm.String" MaxLength="30"/>
+                <Property Name="tran_type" Type="Edm.String" MaxLength="4"/>
+                <Property Name="tran_type_dsc" Type="Edm.String" MaxLength="50"/>
+                <Property Name="status" Type="Edm.String" MaxLength="2"/>
+                <Property Name="status_dsc" Type="Edm.String" MaxLength="30"/>
+                <Property Name="fuel_category" Type="Edm.String" MaxLength="2"/>
+                <Property Name="fuel_cat_dsc" Type="Edm.String" MaxLength="40"/>
+                <Property Name="fuel_sub_category" Type="Edm.String" MaxLength="2"/>
+                <Property Name="fuel_subcat_dsc" Type="Edm.String" MaxLength="40"/>
+                <Property Name="bu_partner" Type="Edm.String" MaxLength="10"/>
+                <Property Name="bp_no_dsc" Type="Edm.String" MaxLength="81"/>
+                <Property Name="compliance_year" Type="Edm.String" MaxLength="4"/>
+                <Property Name="bwart" Type="Edm.String" MaxLength="3"/>
+                <Property Name="inco1" Type="Edm.String" MaxLength="3"/>
+                <Property Name="inco2" Type="Edm.String" MaxLength="28"/>
+                <Property Name="bolnr" Type="Edm.String" MaxLength="50"/>
+                <Property Name="neg_impact" Type="Edm.Boolean"/>
+                <Property Name="percentage" Type="Edm.Decimal" Scale="3" Precision="10"/>
+                <Property Name="submitted" Type="Edm.String" MaxLength="1"/>
+                <Property Name="exgnum" Type="Edm.String" MaxLength="10"/>
+                <Property Name="org_land1" Type="Edm.String" MaxLength="3"/>
+                <Property Name="dst_land1" Type="Edm.String" MaxLength="3"/>
+                <Property Name="org_regio" Type="Edm.String" MaxLength="3"/>
+                <Property Name="dst_regio" Type="Edm.String" MaxLength="3"/>
+            </EntityType>
+            <Annotations Target="CreditService.Credit/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="CreditService.Credit/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="CreditService.Credit/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="CreditService.Credit/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="CreditService.Credit/db_key">
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                    </Annotations>
+                                </Schema>
+                            </edmx:DataServices>
+                        </edmx:Edmx>

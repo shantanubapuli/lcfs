@@ -1,0 +1,165 @@
+_schema-version: "3.1"
+ID: LCFS
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: LCFS-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: LCFS-db
+  - name: uaa_LCFS
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm
+- name: LCFS-db-deployer
+  type: hdb
+  path: db
+  requires:
+  - name: LCFS-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: LCFS-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: LCFS-destination-service
+    parameters:
+      content-target: true
+  - name: LCFS_html_repo_host
+    parameters:
+      service-key:
+        name: LCFS_html_repo_host-key
+  - name: uaa_LCFS
+    parameters:
+      service-key:
+        name: uaa_LCFS-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: ManageApprouter_LCFS_html_repo_host
+          ServiceInstanceName: LCFS-html5-app-host-service
+          ServiceKeyName: LCFS_html_repo_host-key
+          sap.cloud.service: ManageApprouter
+        - Authentication: OAuth2UserTokenExchange
+          Name: ManageApprouter_uaa_LCFS
+          ServiceInstanceName: LCFS-xsuaa-service
+          ServiceKeyName: uaa_LCFS-key
+          sap.cloud.service: ManageApprouter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: LCFS-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: LCFS_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - nslcfs.zip
+      name: nslcfs
+      target-path: resources/
+    - artifacts:
+      - nscreditlcfscredit.zip
+      name: nscreditlcfscredit
+      target-path: resources/
+    - artifacts:
+      - nsdeficitslcfsdefecit.zip
+      name: nsdeficitslcfsdefecit
+      target-path: resources/
+- name: nslcfs
+  type: html5
+  path: app/lcfs
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: nscreditlcfscredit
+  type: html5
+  path: app/lcfscredit
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: nsdeficitslcfsdefecit
+  type: html5
+  path: app/lcfsdefecit
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: LCFS-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: LCFS-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: LCFS-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: LCFS-destination-service
+    service-plan: lite
+  requires:
+  - name: srv-api
+- name: LCFS_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: LCFS-html5-app-host-service
+    service-plan: app-host
+- name: uaa_LCFS
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: LCFS-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: LCFS-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx cds build --production

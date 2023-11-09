@@ -1,0 +1,31 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.LCFSADMIN",
+      "description": "LCFSADMIN"
+    },
+    {
+      "name": "$XSAPPNAME.LCFSREAD",
+      "description": "LCFSREAD"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "LCFSADMIN",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.LCFSADMIN"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "LCFSREAD",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.LCFSREAD"
+      ],
+      "attribute-references": []
+    }
+  ]
+}
